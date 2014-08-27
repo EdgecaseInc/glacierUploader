@@ -51,6 +51,7 @@ def upload(awsKeyId,awsSecret,awsVault,file,inventory,description=None):
             "ERROR: {}".format(err)
         )
 
+    print("Connecting to glacier")
     try:
         connection = boto.connect_glacier(
                                     aws_access_key_id=awsKeyId,
@@ -58,6 +59,8 @@ def upload(awsKeyId,awsSecret,awsVault,file,inventory,description=None):
         )
     except Exception as err:
         showException("ERROR_CONNECTING",err)
+
+    print("Connected.  Getting handle for glacier vault.")
     try:
         vault = connection.get_vault(awsVault)
     except Exception as err:
@@ -67,6 +70,7 @@ def upload(awsKeyId,awsSecret,awsVault,file,inventory,description=None):
             vault = connection.create_vault(awsVault)
         except Exception as err:
             showException("ERROR_CREATING_VAULT:",err)
+
     start=time.time()
     try:
         print("\n\nStarting upload [{}] at {}\n\n".format(file,start))
