@@ -182,7 +182,7 @@ if __name__ == "__main__":
     print("-"*60)
     print("Glacier Uploader Done.")
     print("Please make sure to keep your inventory file somewhere safe.")
-    print("\nInventory File: {}".format(inventory))
+    print("\nInventory File: {}".format(args.inventory))
     print("-"*60)
     print("")
     sys.exit(0)
