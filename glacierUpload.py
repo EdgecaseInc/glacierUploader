@@ -66,8 +66,6 @@ if __name__ == "__main__":
     print("-"*60)
     print("")
 
-
-
     parser=argparse.ArgumentParser(
         description="uploader for Amazon AWS glacier"
     )
