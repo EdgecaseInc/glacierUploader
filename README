@@ -24,16 +24,13 @@ This utility allows the user to upload files to Amazon Glacier via python
 
 Usage: 
 
-glacierUpload.py [-h] [--glacierVault VAULT] [--awsKeyId KEYID]
-                        [--secret SECRET] [--sourceFile SOURCEFILE]
-                        [--description DESC]
+usage: glacierUpload.py [-h] [--vault VAULT] [--key KEY] [--secret SECRET]
+                        [--file FILE] [--description DESC]
 
-optional arguments:
-  -h, --help            show this help message and exit
-  --glacierVault VAULT  AWS Glacier Vault URI
-  --awsKeyId KEYID      AWS API Key Id (aws_awsKeyId)
-  --secret SECRET       AWS secret (aws_secret_access_key)
-  --sourceFile SOURCEFILE
-                        Source file to be uploaded.
-  --description DESC    optional description.
-
+  -h, --help          show this help message and exit
+  --vault VAULT       AWS Glacier Vault (if it doesn't exist, we will create
+                      it.)
+  --key KEY           AWS API Key Id (aws_awsKeyId)
+  --secret SECRET     AWS secret (aws_secret_access_key)
+  --file FILE         Path and filename (upload source)
+  --description DESC  Optional description.
