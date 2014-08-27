@@ -22,14 +22,29 @@ def showException(msg,err):
     print("")
     sys.exit(1)
 
-def upload(awsKeyId,awsSecret,awsVault,fileName,description=None):
+def upload(awsKeyId,awsSecret,awsVault,file,inventory,description=None):
 
     connection=None
     vault=None
     
-    if not os.path.isfile(fileName) :
-        print("File not found: {}".format(fileName))
-        sys.exit(1);
+    try:
+        with open(inventory,'a') as f:
+            print("Verified inventory file is writable.")
+    except Exception as err:
+        raise Exception(
+            "Could not verify write access to inventory file.  " + \
+            "ERROR: {}".format(err)
+        )
+
+    try:
+        with open(file,'r') as f:
+            print("source file readability verified.")
+    except Exception as err:
+        raise Exception(
+            "Could not verify readability of source file." + \
+            "ERROR: {}".format(err)
+        )
+
     try:
         connection = boto.connect_glacier(
                                     aws_access_key_id=awsKeyId,
@@ -37,7 +52,6 @@ def upload(awsKeyId,awsSecret,awsVault,fileName,description=None):
         )
     except Exception as err:
         showException("ERROR_CONNECTING",err)
-
     try:
         vault = connection.get_vault(awsVault)
     except Exception as err:
@@ -47,17 +61,19 @@ def upload(awsKeyId,awsSecret,awsVault,fileName,description=None):
             vault = connection.create_vault(awsVault)
         except Exception as err:
             showException("ERROR_CREATING_VAULT:",err)
-
+    startTime=time.time()
     try:
-        print(
-            "\n\nStarting upload [{}] at {}\n\n"
-            .format(fileName,datetime.datetime.now())
-        )
-        archive_id = vault.upload_archive(fileName)
+        print("\n\nStarting upload [{}] at {}\n\n".format(fileName,startTime))
+        archive_id = vault.upload_archive(file)
     except Exception as err:
         showException("ERROR_UPLOADING",err)
+    stopTime=time.time()
 
-    print("Done id:{} time:{}".format(archive_id,datetime.datetime.now()))
+    print("Done id:{} time:{}".format(archive_id,stopTime))
+    
+    with open(inventory,'a') as f:
+        f.write("'{}','{}','{}'".format(file,startTime,stopTime,archive_id))
+    
     return archive_id
 
 if __name__ == "__main__":
@@ -95,6 +111,12 @@ if __name__ == "__main__":
         default="",
         type=str
     )
+    parser.add_argument("--inventory",
+        help="Inventory file where we will track what is uploaded.",
+        dest="inventory",
+        default="inventory.csv",
+        type=str
+    )
     args=parser.parse_args()
 
     try:
@@ -118,7 +140,14 @@ if __name__ == "__main__":
         sys.exit(1)
 
     try:
-        id=upload( args.key, args.secret, args.vault, args.file, args.desc )
+        id=upload(
+            args.key,
+            args.secret,
+            args.vault,
+            args.file,
+            args.inventory,
+            args.desc
+        )
     except Exception as err:
         print("upload failed.  ERROR:{}".format(err))
         sys.exit(1)
