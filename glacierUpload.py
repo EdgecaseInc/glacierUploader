@@ -43,7 +43,7 @@ def upload(awsKeyId,awsSecret,awsVault,file,inventory,description=None):
         )
 
     try:
-        with open(file,'r') as f:
+        with open(file,'rb') as f:
             print("source file readability verified.")
     except Exception as err:
         raise Exception(
@@ -148,13 +148,6 @@ if __name__ == "__main__":
             raise exception("file")
     except Exception as err:
         print("Missing Argument: {}".format(err))
-        sys.exit(1)
-
-    try:
-        with open(args.file,'r') as f:
-            print("source file is valid and readable.")
-    except Exception as err:
-        print("Could not find or open file [{}]".format(args.file))
         sys.exit(1)
 
     try:
