@@ -28,8 +28,6 @@ glacierUpload.py [-h] [--glacierVault VAULT] [--awsKeyId KEYID]
                         [--secret SECRET] [--sourceFile SOURCEFILE]
                         [--description DESC]
 
-uploader for Amazon AWS glacier
-
 optional arguments:
   -h, --help            show this help message and exit
   --glacierVault VAULT  AWS Glacier Vault URI
