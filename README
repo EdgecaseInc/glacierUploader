@@ -24,6 +24,7 @@
 Purpose:
 ===========================
 
+
     This utility allows the user to upload files to Amazon Glacier via 
     python 2.7 via boto.
 
@@ -34,19 +35,29 @@ Purpose:
 Usage (From commandline):
 ===========================
 
+
     glacierUpload.py [-h] [--vault VAULT] [--key KEY] [--secret SECRET]
                      [--file FILE] [--description DESC]
+                     [--inventory INVENTORY]
 
-    -h, --help          show this help message and exit
-    --vault VAULT       AWS Glacier Vault Name
-    --key KEY           AWS API Key Id (aws_awsKeyId)
-    --secret SECRET     AWS secret (aws_secret_access_key)
-    --file FILE         Path and filename (upload source)
-    --description DESC  Optional description.
+    Arguments:
+     -h, --help             Show this help message and exit
+
+     --vault VAULT          AWS Glacier Vault
+
+    --key KEY               AWS API Key Id (aws_awsKeyId)
+
+    --secret SECRET         AWS secret (aws_secret_access_key)
+
+    --file FILE             Path and filename (upload source)
+
+    --description DESC      Optional description.
+
+    --inventory INVENTORY   Inventory file where we track what is uploaded.
+
 
     NOTE: If the vault name given does not exist, the script will create it
           first.
-
 
 
 
@@ -54,6 +65,33 @@ Usage (From commandline):
 Usage: (From Other Scripts):
 ===========================
 
-import glacierUpload
-glacierUpload.upload(awsKeyId,awsSecret,awsVault,fileName,description=None)
+
+    import glacierUpload
+    glacierUpload.upload(
+                        awsKeyId,
+                        awsSecret,
+                        awsVault,
+                        fileName,
+                        inventory,
+                        description=None
+    )
+
+
+
+===========================
+Known Issues:
+===========================
+
+
+(1) Be sure your system clock is synchronized.  Failure to sync the system clock will encounter a "Signature expired" message.  For Linux systems, it is
+suggested that using ntpdate to synchronize the clock is a simple solution.  In
+Debian, this is done by executing--
+
+    sudo apt-get install ntpdate -y
+    ntpdate 0.pool.ntp.org
+
+(2) Be sure to verify that your inventory path/filename are writable.  Do not
+lose the inventory file.  It is the only means of identifying what is uploaded
+into your Glacier vaults.
+
 
