@@ -94,15 +94,20 @@ Known Issues:
 ===========================
 
 
-(1) Be sure your system clock is synchronized.  Failure to sync the system clock will encounter a "Signature expired" message.  For Linux systems, it is
-suggested that using ntpdate to synchronize the clock is a simple solution.  In
-Debian, this is done by executing--
+(0) We currently can only archive TEXT files (e.g. mongo dumps in JSON) and not
+    binary files.  This is due to an open issue with Python 2.7 (see   
+    http://bugs.python.org/issue12398)
 
-    sudo apt-get install ntpdate -y
-    ntpdate 0.pool.ntp.org
+(1) Be sure your system clock is synchronized.  Failure to sync the system    
+    clock will encounter a "Signature expired" message.  For Linux systems, it
+    is suggested that using ntpdate to synchronize the clock is a simple
+    solution.  In Debian, this is done by executing--
+
+        sudo apt-get install ntpdate -y
+        ntpdate 0.pool.ntp.org
 
 (2) Be sure to verify that your inventory path/filename are writable.  Do not
-lose the inventory file.  It is the only means of identifying what is uploaded
-into your Glacier vaults.
+    lose the inventory file.  It is the only means of identifying what is     
+    uploaded into your Glacier vaults.
 
 
