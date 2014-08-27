@@ -17,20 +17,43 @@
     Sam Caldwell [sam@edgecase.io]
 --------------------------------------
 
+
+
+
+===========================
 Purpose:
+===========================
 
-This utility allows the user to upload files to Amazon Glacier via python 
-2.7 via boto.
+    This utility allows the user to upload files to Amazon Glacier via 
+    python 2.7 via boto.
 
-Usage: 
 
-usage: glacierUpload.py [-h] [--vault VAULT] [--key KEY] [--secret SECRET]
-                        [--file FILE] [--description DESC]
 
-  -h, --help          show this help message and exit
-  --vault VAULT       AWS Glacier Vault (if it doesn't exist, we will create
-                      it.)
-  --key KEY           AWS API Key Id (aws_awsKeyId)
-  --secret SECRET     AWS secret (aws_secret_access_key)
-  --file FILE         Path and filename (upload source)
-  --description DESC  Optional description.
+
+===========================
+Usage (From commandline):
+===========================
+
+    glacierUpload.py [-h] [--vault VAULT] [--key KEY] [--secret SECRET]
+                     [--file FILE] [--description DESC]
+
+    -h, --help          show this help message and exit
+    --vault VAULT       AWS Glacier Vault Name
+    --key KEY           AWS API Key Id (aws_awsKeyId)
+    --secret SECRET     AWS secret (aws_secret_access_key)
+    --file FILE         Path and filename (upload source)
+    --description DESC  Optional description.
+
+    NOTE: If the vault name given does not exist, the script will create it
+          first.
+
+
+
+
+===========================
+Usage: (From Other Scripts):
+===========================
+
+import glacierUpload
+glacierUpload.upload(awsKeyId,awsSecret,awsVault,fileName,description=None)
+

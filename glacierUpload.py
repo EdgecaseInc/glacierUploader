@@ -22,7 +22,7 @@ def showException(msg,err):
     print("")
     sys.exit(1)
 
-def upload(awsKeyId,awsSecret,awsVault,fileName,description):
+def upload(awsKeyId,awsSecret,awsVault,fileName,description=None):
 
     connection=None
     vault=None
