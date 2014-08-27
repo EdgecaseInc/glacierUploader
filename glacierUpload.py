@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #
 # glacerUpload.py
 # (c) 2014 Compare Metrics, Inc.
@@ -15,7 +15,7 @@ import argparse
 import datetime
 
 def showException(msg,err):
-    print msg +":"+ str(err)
+    print(msg +":"+ str(err))
     print("-"*60)
     traceback.print_exc(file=sys.stdout)
     print("-"*60)
