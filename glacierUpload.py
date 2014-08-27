@@ -34,13 +34,7 @@ import boto
 import argparse
 import time
 
-def showException(msg,err):
-    print(msg +":"+ str(err))
-    print("-"*60)
-    traceback.print_exc(file=sys.stdout)
-    print("-"*60)
-    print("")
-    sys.exit(1)
+
 
 def upload(awsKeyId,awsSecret,awsVault,file,inventory,description=None):
 
@@ -81,20 +75,32 @@ def upload(awsKeyId,awsSecret,awsVault,file,inventory,description=None):
             vault = connection.create_vault(awsVault)
         except Exception as err:
             showException("ERROR_CREATING_VAULT:",err)
-    startTime=time.time()
+    start=time.time()
     try:
-        print("\n\nStarting upload [{}] at {}\n\n".format(file,startTime))
-        archive_id = vault.upload_archive(file)
+        print("\n\nStarting upload [{}] at {}\n\n".format(file,start))
+        id = vault.upload_archive(file)
     except Exception as err:
         showException("ERROR_UPLOADING",err)
-    stopTime=time.time()
+    stop=time.time()
 
-    print("Done id:{} time:{}".format(archive_id,stopTime))
+    print("Done id:{} time:{}".format(id,stop))
     
     with open(inventory,'a') as f:
-        f.write("'{}','{}','{}'".format(file,startTime,stopTime,archive_id))
+        f.write("'{}','{}','{}','{}'\n".format(file,start,stop,id))
     
-    return archive_id
+    return id
+
+
+
+def showException(msg,err):
+    print(msg +":"+ str(err))
+    print("-"*60)
+    traceback.print_exc(file=sys.stdout)
+    print("-"*60)
+    print("")
+    sys.exit(1)
+
+
 
 if __name__ == "__main__":
     print("-"*60)
@@ -171,7 +177,12 @@ if __name__ == "__main__":
     except Exception as err:
         print("upload failed.  ERROR:{}".format(err))
         sys.exit(1)
-        
-    print("File Successfully uploaded.")
-    print("\nFileId: {}".format(id))
+
+    print("")
     print("-"*60)
+    print("Glacier Uploader Done.")
+    print("Please make sure to keep your inventory file somewhere safe.")
+    print("\nInventory File: {}".format(inventory))
+    print("-"*60)
+    print("")
+    sys.exit(0)
